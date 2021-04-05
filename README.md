@@ -6,4 +6,9 @@ Though it is not yet verified for all scenarios/campaigns this is fixed the issu
 
 # How to use
 Just run the fixer with game folder as a parameter. It will fix all unit ids for all scenratios and create a backup folder for scenarious called (scenarios_backup) in the game folder, so if you have any issues with the scenarios you can restore them.
+
+There are two versions. One is required .net5.0 runtime, while other is selfcontained (comes bundled with net5.0 inside app).
+
 For some files you can see the message like "Unit with id 4103 is not mapped!". This is normal situation. For some reason the files seems to be human written, so there are some units commented or removed from scn file, but their ids are still in msc file.
+
+Example: MassiveAssaultScnFixer.exe "d:\Games\Massive Assault"
