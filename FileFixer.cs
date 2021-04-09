@@ -11,7 +11,8 @@ namespace MassiveAssaultScnFixer
 
         private bool _lastScnLineWasEmpty = false;
         private readonly Dictionary<int, int> _unitIdMapping = new Dictionary<int, int>();
-        private int _unitCounter = 1;
+        private int _alienUnitCounter = 1;
+        private int _humanUnitCounter = 4001;
         
         public FileFixer(string file)
         {
@@ -70,13 +71,22 @@ namespace MassiveAssaultScnFixer
             if (tokens[0].EndsWith("UNIT"))
             {
                 var originalUnitId = int.Parse(tokens[1]);
-                _unitIdMapping[originalUnitId] = _unitCounter;
-                tokens[1] = _unitCounter.ToString();
-                ++_unitCounter;
+                var isHumanUnit = tokens[3].Contains("HUMANS");
+                if (isHumanUnit)
+                    UpdateUnitId(tokens, originalUnitId, ref _humanUnitCounter);
+                else
+                    UpdateUnitId(tokens, originalUnitId, ref _alienUnitCounter);
                 return string.Join(',', tokens);
             }
 
             return originalLine;
+        }
+
+        private void UpdateUnitId(string[] tokens, int originalUnitId, ref int unitCounter)
+        {
+            _unitIdMapping[originalUnitId] = unitCounter;
+            tokens[1] = unitCounter.ToString();
+            ++unitCounter;
         }
         
         private string? ProcessMscLine(string? originalLine)
