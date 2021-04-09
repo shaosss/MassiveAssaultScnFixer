@@ -71,11 +71,17 @@ namespace MassiveAssaultScnFixer
             if (tokens[0].EndsWith("UNIT"))
             {
                 var originalUnitId = int.Parse(tokens[1]);
-                var isHumanUnit = tokens[3].Contains("HUMANS");
-                if (isHumanUnit)
-                    UpdateUnitId(tokens, originalUnitId, ref _humanUnitCounter);
+                if (_unitIdMapping.ContainsKey(originalUnitId))
+                    tokens[1] = _unitIdMapping[originalUnitId].ToString();
                 else
-                    UpdateUnitId(tokens, originalUnitId, ref _alienUnitCounter);
+                {
+                    var isHumanUnit = tokens[3].Contains("HUMANS");
+                    if (isHumanUnit)
+                        UpdateUnitId(tokens, originalUnitId, ref _humanUnitCounter);
+                    else
+                        UpdateUnitId(tokens, originalUnitId, ref _alienUnitCounter);
+                }
+                
                 return string.Join(',', tokens);
             }
 
